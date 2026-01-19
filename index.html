@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Generator & Solver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Maze Generator & Solver</h1>
+
+	<div class="control-group">
+	    <label for="commandInput">指示 (F:前, R:右, L:左)</label>
+	    <div style="display: flex; gap: 5px;">
+	        <input type="text" id="commandInput" value="" style="width: 150px; text-transform: uppercase;" placeholder="例: FFRF">
+	        <button id="btnCommand">実行</button>
+            <button id="btnReset" style="background-color: #6c757d;">リセット</button>
+	    </div>
+	</div>    
+    <br>
+    <div id="canvas-container">
+        <canvas id="mazeCanvas" width="600" height="600"></canvas>
+    </div>
+    <br><br><br><br>    
+
+    <div id="controls">
+        <div class="control-group">
+            <label for="gridSize">細度 (奇数)</label>
+            <input type="range" id="gridSize" min="11" max="101" value="13" step="2">
+        </div>
+
+        <div class="control-group">
+            <label for="branchRate">分岐 (少⇔多)</label>
+            <input type="range" id="branchRate" min="0" max="100" value="50">
+        </div>
+
+        <div class="control-group">
+            <div style="display: flex; gap: 10px;">
+                <button id="btnCreate">作成</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label for="speedRange">実行速度 (遅⇔速)</label>
+            <input type="range" id="speedRange" min="0" max="100" value="60">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
