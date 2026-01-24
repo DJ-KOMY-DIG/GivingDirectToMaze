@@ -4,7 +4,6 @@
 
 // Firebase SDKのインポート（モジュール版）
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-// ★ remove を追加しました
 import { getDatabase, ref, push, onChildAdded, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 // Your web app's Firebase configuration
@@ -51,26 +50,28 @@ if (sendBtn) {
     sendBtn.addEventListener('click', () => {
         const nameField = document.getElementById('inputName');
         const nameVal = nameField.value.trim();
-        const cmdVal = cmdField.value.toUpperCase().trim(); // 念のため大文字化
+        const cmdVal = cmdField.value.toUpperCase().trim(); // 大文字化
         
         if (!nameVal) {
-            alert("名前を入力してください");
+            alert("名前を入力してください！");
             return;
         }
         if (!cmdVal) {
-            alert("コマンド(F, R, L)を入力してください");
+            alert("指示（F、R、L）を入力してください！");
             return;
         }
 
-        // データを送信
+        // データ送信
         push(ref(db, 'answers'), {
             name: nameVal,
             command: cmdVal,
             timestamp: serverTimestamp()
         }).then(() => {
             alert("送信しました！");
-            // ★変更点：送信後に入力欄をクリアしないようにしました
+
+            // 送信後に入力欄をクリア
             // cmdField.value = ""; 
+
         }).catch((error) => {
             console.error("Error:", error);
             alert("送信に失敗しました");
@@ -92,6 +93,7 @@ if (resultsDiv) {
 
         const card = document.createElement("div");
         card.className = "card";
+
         // 安全のためにHTMLエスケープ（名前に入力されたタグなどが動かないように）
         // ※簡易的なXSS対策として textContent を使うか、このようにサニタイズするのが望ましい
         const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -106,11 +108,11 @@ if (resultsDiv) {
         window.scrollTo(0, document.body.scrollHeight);
     });
 
-    // ★追加機能：データリセットボタンの処理
+    // リセットボタンの処理
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-            if (confirm("【注意】\n受講生の回答データをすべて消去します。\nよろしいですか？")) {
+            // if (confirm("【注意】\n受講生の回答データをすべて消去します。\nよろしいですか？")) {
                 // データベースの 'answers' フォルダを削除
                 remove(ref(db, 'answers'))
                     .then(() => {
@@ -122,7 +124,7 @@ if (resultsDiv) {
                         console.error(error);
                         alert("リセットに失敗しました");
                     });
-            }
+            // }
         });
     }
 }
