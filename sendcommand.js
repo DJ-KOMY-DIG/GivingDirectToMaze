@@ -28,35 +28,38 @@ const db = getDatabase(app);
 // --------------------------------------------------
 const sendBtn = document.getElementById('sendBtn');
 if (sendBtn) {
+    const cmdField = document.getElementById('inputCommand');
+    
+    // ★追加機能：入力した瞬間に F, R, L 以外を消去＆大文字化する
+    cmdField.addEventListener('input', (e) => {
+        // 入力された値から f,r,l (大文字小文字) 以外を取り除く
+        const cleanVal = e.target.value.replace(/[^fFrRlL]/g, '');
+        // 大文字にして書き戻す
+        e.target.value = cleanVal.toUpperCase();
+    });
+
     sendBtn.addEventListener('click', () => {
         const nameField = document.getElementById('inputName');
-        const cmdField = document.getElementById('inputCommand');
-        
         const nameVal = nameField.value.trim();
-        // 入力を大文字に変換して取得
-        const cmdVal = cmdField.value.toUpperCase().trim(); 
+        const cmdVal = cmdField.value.trim(); 
         
-        // バリデーション1: 名前があるか
         if (!nameVal) {
             alert("名前を入力してください");
             return;
         }
-
-        // バリデーション2: F, R, L 以外の文字が含まれていないかチェック
-        // ^[FRL]+$ は「先頭から末尾までFかRかLだけが1文字以上続く」という意味
-        if (!cmdVal.match(/^[FRL]+$/)) {
-            alert("「F」「R」「L」の文字だけで入力してください");
+        if (!cmdVal) {
+            alert("コマンドを入力してください");
             return;
         }
 
-        // データを送信（名前とコマンドをセットで）
+        // データを送信
         push(ref(db, 'answers'), {
             name: nameVal,
             command: cmdVal,
             timestamp: serverTimestamp()
         }).then(() => {
             alert("送信しました！");
-            cmdField.value = ""; // コマンド欄だけクリア（名前は残すほうが親切）
+            cmdField.value = ""; // コマンド欄だけクリア
         }).catch((error) => {
             console.error("Error:", error);
             alert("送信に失敗しました");
@@ -73,17 +76,23 @@ if (resultsDiv) {
     
     onChildAdded(answersRef, (snapshot) => {
         const data = snapshot.val();
-        const name = data.name || "名無し"; // データがない場合の保険
-        const command = data.command || "";
+        
+        // ★追加機能：名前やコマンドがない不正なデータ（古いデータ）は無視する
+        if (!data.name || !data.command) {
+            return; 
+        }
 
-        // カード要素を作成
         const card = document.createElement("div");
         card.className = "card";
         
-        // 中身のHTMLを組み立て（名前を小さく、コマンドを大きく）
+        // 安全のためにHTMLエスケープ（名前に入力されたタグなどが動かないように）
+        // ※簡易的なXSS対策として textContent を使うか、このようにサニタイズするのが望ましいです
+        const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeCmd = data.command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
         card.innerHTML = `
-            <div class="card-name">${name}</div>
-            <div class="card-cmd">${command}</div>
+            <div class="card-name">${safeName}</div>
+            <div class="card-cmd">${safeCmd}</div>
         `;
         
         resultsDiv.appendChild(card);
