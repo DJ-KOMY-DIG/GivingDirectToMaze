@@ -112,11 +112,11 @@ if (resultsDiv) {
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-            // if (confirm("【注意】\n受講生の回答データをすべて消去します。\nよろしいですか？")) {
+            if (confirm("データをすべて消去します。\nよろしいですか？")) {
                 // データベースの 'answers' フォルダを削除
                 remove(ref(db, 'answers'))
                     .then(() => {
-                        alert("データをリセットしました");
+                        // alert("データをリセットしました");
                         // 画面に残っているカードを消すためにリロード
                         location.reload();
                     })
@@ -124,7 +124,7 @@ if (resultsDiv) {
                         console.error(error);
                         alert("リセットに失敗しました");
                     });
-            // }
+            }
         });
     }
 }
