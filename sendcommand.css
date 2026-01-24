@@ -1,0 +1,70 @@
+/* 共通設定 */
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+/* 受講生用（入力フォーム）のスタイル */
+input#inputChar {
+    font-size: 24px;
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    text-transform: uppercase; /* 入力を強制的に大文字表示 */
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button#sendBtn {
+    font-size: 20px;
+    padding: 10px 30px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button#sendBtn:hover {
+    background-color: #0056b3;
+}
+
+/* 講師用（結果表示）のスタイル */
+#results { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+    justify-content: center; 
+    margin-top: 20px; 
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弾むようなアニメーション */
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
