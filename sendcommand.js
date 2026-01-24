@@ -24,30 +24,39 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // --------------------------------------------------
-// ページ判定ロジック
+// 1. 受講生ページ用の処理
 // --------------------------------------------------
-
-// 1. 受講生ページ用の処理（送信ボタンがある場合のみ実行）
 const sendBtn = document.getElementById('sendBtn');
 if (sendBtn) {
     sendBtn.addEventListener('click', () => {
-        const inputField = document.getElementById('inputChar');
-        const inputVal = inputField.value.toUpperCase();
+        const nameField = document.getElementById('inputName');
+        const cmdField = document.getElementById('inputCommand');
         
-        // バリデーション：A-Zの1文字かどうか
-        if (!inputVal.match(/^[A-Z]$/)) {
-            alert("アルファベットを1文字入力してください");
+        const nameVal = nameField.value.trim();
+        // 入力を大文字に変換して取得
+        const cmdVal = cmdField.value.toUpperCase().trim(); 
+        
+        // バリデーション1: 名前があるか
+        if (!nameVal) {
+            alert("名前を入力してください");
             return;
         }
 
-        // データを送信
+        // バリデーション2: F, R, L 以外の文字が含まれていないかチェック
+        // ^[FRL]+$ は「先頭から末尾までFかRかLだけが1文字以上続く」という意味
+        if (!cmdVal.match(/^[FRL]+$/)) {
+            alert("「F」「R」「L」の文字だけで入力してください");
+            return;
+        }
+
+        // データを送信（名前とコマンドをセットで）
         push(ref(db, 'answers'), {
-            char: inputVal,
+            name: nameVal,
+            command: cmdVal,
             timestamp: serverTimestamp()
         }).then(() => {
             alert("送信しました！");
-            inputField.value = ""; // 入力欄をクリア
-            inputField.focus();    // 次の入力のためにフォーカスを戻す
+            cmdField.value = ""; // コマンド欄だけクリア（名前は残すほうが親切）
         }).catch((error) => {
             console.error("Error:", error);
             alert("送信に失敗しました");
@@ -55,25 +64,29 @@ if (sendBtn) {
     });
 }
 
-// 2. 講師ページ用の処理（結果表示エリアがある場合のみ実行）
+// --------------------------------------------------
+// 2. 講師ページ用の処理
+// --------------------------------------------------
 const resultsDiv = document.getElementById('results');
 if (resultsDiv) {
     const answersRef = ref(db, 'answers');
     
-    // データが追加されるたびに呼ばれる
     onChildAdded(answersRef, (snapshot) => {
         const data = snapshot.val();
-        const char = data.char;
+        const name = data.name || "名無し"; // データがない場合の保険
+        const command = data.command || "";
 
         // カード要素を作成
         const card = document.createElement("div");
         card.className = "card";
-        card.textContent = char;
         
-        // 画面に追加（新しいものが後ろに追加される）
+        // 中身のHTMLを組み立て（名前を小さく、コマンドを大きく）
+        card.innerHTML = `
+            <div class="card-name">${name}</div>
+            <div class="card-cmd">${command}</div>
+        `;
+        
         resultsDiv.appendChild(card);
-        
-        // 自動スクロール（要素が多くなった場合、一番下を見せる）
         window.scrollTo(0, document.body.scrollHeight);
     });
 }

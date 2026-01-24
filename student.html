@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>アルファベット送信</title>
+    <title>コマンド送信</title>
     <link rel="stylesheet" href="sendcommand.css">
 </head>
 <body>
 
-    <h2>アルファベットを入力してください</h2>
-    <input type="text" id="inputChar" maxlength="1" placeholder="A">
-    <br>
+    <h2>コマンド送信</h2>
+    
+    <div class="input-group">
+        <label>名前</label>
+        <input type="text" id="inputName" placeholder="山田 太郎">
+    </div>
+
+    <div class="input-group">
+        <label>命令 (F, R, Lのみ)</label>
+        <input type="text" id="inputCommand" placeholder="FFRFL">
+    </div>
+
     <button id="sendBtn">送信</button>
 
     <script type="module" src="sendcommand.js"></script>
