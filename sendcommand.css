@@ -7,7 +7,7 @@ body {
     text-align: center;
 }
 
-/* ★追加：講師ページのヘッダー整列用 */
+/* 講師ページのヘッダー整列用 */
 .header {
     display: flex;
     justify-content: center;
@@ -21,7 +21,7 @@ h1, h2 {
     margin: 0;
 }
 
-/* ★追加：リセットボタン（赤色） */
+/* リセットボタン（赤色） */
 button.danger-btn {
     font-size: 14px;
     padding: 8px 16px;
@@ -35,7 +35,6 @@ button.danger-btn:hover {
     background-color: #bd2130;
 }
 
-/* --- 以下、前回と同じ --- */
 
 .input-group {
     margin-bottom: 15px;
