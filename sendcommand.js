@@ -92,6 +92,8 @@ if (resultsDiv) {
 
         const card = document.createElement("div");
         card.className = "card";
+        // 安全のためにHTMLエスケープ（名前に入力されたタグなどが動かないように）
+        // ※簡易的なXSS対策として textContent を使うか、このようにサニタイズするのが望ましい
         const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         const safeCmd = data.command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
