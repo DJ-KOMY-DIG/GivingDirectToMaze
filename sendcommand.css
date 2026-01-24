@@ -62,6 +62,33 @@ input[type="text"] {
     outline: none;
 }
 
+/* inputタグとtextareaタグ共通のデザイン */
+input[type="text"],
+textarea {
+    font-size: 18px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box; 
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    font-family: inherit; /* フォントを親に合わせる */
+}
+
+/* コマンド入力エリア固有の設定 */
+textarea#inputCommand {
+    text-transform: uppercase; 
+    letter-spacing: 2px;
+    height: 150px;       /* 高さを指定 */
+    resize: vertical;    /* 縦方向だけサイズ変更可能にする */
+    line-height: 1.5;    /* 行間を少し広げて読みやすく */
+}
+
+input:focus,
+textarea:focus {
+    border-color: #007bff;
+}
+
 input#inputCommand {
     text-transform: uppercase; 
     letter-spacing: 2px;
