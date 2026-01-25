@@ -1,3 +1,7 @@
+// 2025/12/28 Daisuke Komori
+
+'use strict';
+
 // 定数定義
 const AISLE = 0;      // 通路 (白)
 const FLG_START = 1;  // スタート
@@ -40,7 +44,8 @@ window.onload = () => {
     createMaze();    
     btnCreate.onclick = createMaze;
     btnCommand.onclick = runCommandMaze;
-    btnReset.onclick = resetMazePath; 
+    btnReset.onclick = resetMazePath;
+    inputCommand.focus(); 
 };
 
 // 迷路作成
@@ -150,9 +155,9 @@ function drawStartArrow() {
 // 指示を実行
 async function runCommandMaze() {
     if (isAnimating) return;    // アニメーション中は無効
-    isAnimating = true;     // アニメーション中フラグセット
-    disableControls();   // コントロール無効化
-    resetMazePath(); // 初期矢印描画
+    resetMazePath();            // リセット
+    isAnimating = true;         // アニメーション中フラグセット
+    disableControls();          // コントロール無効化
 
     const commands = inputCommand.value.toUpperCase().trim();   // 指示取得
 
@@ -247,7 +252,7 @@ async function runCommandMaze() {
                 drawCell(cy, cx); // 一度クリア
                 drawArrow(cy, cx, dir); 
                 
-                alert((i + 1) + "文字目のコマンド「" + char + "」で壁に衝突しました！");
+                alert(i + "文字目の指示「" + char + "」で壁に衝突しました！");
                 break;
             }
         }
@@ -355,3 +360,4 @@ function shuffleArray(array) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
