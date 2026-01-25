@@ -1,6 +1,7 @@
 // 2026/01/22 Daisuke Komori
 // sendcommand.js
 
+'use strict'
 
 // Firebase SDKのインポート（モジュール版）
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
