@@ -98,10 +98,11 @@ if (resultsDiv) {
         // 安全のためにHTMLエスケープ（名前に入力されたタグなどが動かないように）
         // ※簡易的なXSS対策として textContent を使うか、このようにサニタイズするのが望ましい
         const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeTime = data.timestamp.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         const safeCmd = data.command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
         card.innerHTML = `
-            <div class="card-name">${safeName}</div>
+            <div class="card-name">${safeName} + " " + ${safeTime}</div>
             <div class="card-cmd">${safeCmd}</div>
         `;
         
