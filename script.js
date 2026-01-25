@@ -19,14 +19,13 @@ const COLORS = {
 };
 
 // グローバル変数
-let maze = [];  // 2D配列で迷路データを保持
-let rows = 0;   // 行数
-let cols = 0;   // 列数
-let cellSize = 0;   // セルのサイズ（ピクセル）
+let maze = [];              // 2D配列で迷路データを保持
+let rows = 0;               // 行数
+let cols = 0;               // 列数
+let cellSize = 0;           // セルのサイズ（ピクセル）
 let isAnimating = false;    // アニメーション中フラグ
 
-// キャンバスの固定サイズ
-const CANVAS_SIZE = 600;
+const CANVAS_SIZE = 600;    // キャンバスの固定サイズ
 
 // DOM要素
 const canvas = document.getElementById('mazeCanvas');
@@ -51,13 +50,12 @@ window.onload = () => {
 // 迷路作成
 function createMaze() {
     if (isAnimating) return;                    // アニメーション中は無効
-
     inputCommand.value = "";                    // 指示入力欄をクリア
     let val = parseInt(inputGridSize.value);    // グリッドサイズ取得
     if (val % 2 === 0) val += 1;                // 偶数なら奇数に調整
     
-    rows = val; // 行数
-    cols = val; // 列数
+    rows = val;                     // 行数
+    cols = val;                     // 列数
     cellSize = CANVAS_SIZE / rows;  // セルサイズ
 
     const branchRate = parseInt(rangeBranch.value) / 100;   // 分岐率 (0.0 - 1.0)   
@@ -74,7 +72,7 @@ function createMaze() {
     let activeCells = [];
     const startY = 1;
     const startX = 1;
-    maze[startY][startX] = AISLE;   // スタート地点を通路に
+    maze[startY][startX] = AISLE;               // スタート地点を通路に
     activeCells.push({y: startY, x: startX});   // アクティブセルリストに追加
 
     // 探索方向の定義 (上下左右)
@@ -110,7 +108,7 @@ function createMaze() {
                     const wallY = cy + directions[i].dy / 2;    // 壁yの座標
                     const wallX = cx + directions[i].dx / 2;    // 壁xの座標
                     maze[wallY][wallX] = AISLE; // 壁を通路に
-                    maze[ny][nx] = AISLE;   // 新しいセルを通路に
+                    maze[ny][nx] = AISLE;       // 新しいセルを通路に
 
                     activeCells.push({ y: ny, x: nx });  // アクティブセルリストに追加
                     found = true;
@@ -127,7 +125,7 @@ function createMaze() {
     maze[1][1] = FLG_START;
     maze[rows - 2][cols - 2] = FLG_GOAL;
 
-    drawMaze(); // 迷路描画    
+    drawMaze();         // 迷路描画    
     drawStartArrow();   // 作成時にスタート地点の矢印を表示
 
 }
@@ -183,19 +181,18 @@ async function runCommandMaze() {
     
     // 現在地と矢印を描画
     maze[cy][cx] = PATH;
-    drawCell(cy, cx);   // スタート地点を描画
+    drawCell(cy, cx);       // スタート地点を描画
     drawArrow(cy, cx, dir); // 矢印描画
 
     // 指示実行ループ
     for (let i = 0; i < commands.length; i++) {
-        const char = commands[i];
-        
+        const char = commands[i];        
         const speed = parseInt(rangeSpeed.value);
         const waitTime = Math.max(0, 100 - speed);
         
         if (waitTime > 0) await sleep(waitTime * 5); // アニメーション待機 
 
-        // 1. 次の向きを決定
+        // 次の向きを決定
         let nextDir = dir;
         
         if (char === 'F') {
@@ -212,14 +209,14 @@ async function runCommandMaze() {
             continue;
         }
 
-        // 2. 向きを更新 (移動前に向きを変える)
+        // 向きを更新 (移動前に向きを変える)
         dir = nextDir;
 
-        // 3. その方向へ進む座標を計算
+        // その方向へ進む座標を計算
         const ny = cy + dy[dir];
         const nx = cx + dx[dir];
 
-        // 4. 移動チェック
+        // 移動チェック
         if (ny >= 0 && ny < rows && nx >= 0 && nx < cols) {
             if (maze[ny][nx] !== WALL) {    // 通路へ移動
 
@@ -237,6 +234,7 @@ async function runCommandMaze() {
                 
                 // 移動先を描画
                 drawCell(cy, cx);
+
                 // 新しい位置・向きで矢印を描画
                 drawArrow(cy, cx, dir);
 
@@ -304,7 +302,7 @@ function resetMazePath() {
     maze[1][1] = FLG_START;
     maze[rows - 2][cols - 2] = FLG_GOAL;
 
-    drawMaze(); // 迷路再描画
+    drawMaze();         // 迷路再描画
     drawStartArrow();   // 矢印表示
 }
 

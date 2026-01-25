@@ -86,7 +86,7 @@ textarea#inputCommand {
     letter-spacing: 2px;
     height: 150px;       /* 高さを指定 */
     resize: vertical;    /* 縦方向だけサイズ変更可能にする */
-    line-height: 1.5;    /* 行間を少し広げて読みやすく */
+    line-height: 1.5;    /* 行間を少し広げて可読性UP */
 }
 
 input:focus,

@@ -25,19 +25,17 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // --------------------------------------------------
-// 1. 受講生ページ用の処理
+// student.html用の処理
 // --------------------------------------------------
-const sendBtn = document.getElementById('sendBtn');
+const sendBtn = document.getElementById('sendBtn'); // 送信ボタン
 if (sendBtn) {
-    const cmdField = document.getElementById('inputCommand');
+    const cmdField = document.getElementById('inputCommand');   // 指示入力ボックス
     
-    // ★入力制限のロジック
+    // 入力制限のロジック
     // 日本語入力中などを考慮し、inputイベントで監視
-    const validateInput = (e) => {
-        // 現在の入力値
-        const val = e.target.value;
-        // F,R,L (大文字小文字) 以外を空文字に置換
-        const cleanVal = val.replace(/[^fFrRlL]/g, '');
+    const validateInput = (e) => {        
+        const val = e.target.value;                     // 現在の入力値        
+        const cleanVal = val.replace(/[^fFrRlL]/g, ''); // F,R,L (大文字小文字) 以外を空文字に置換
         
         // 変化があった場合のみ値を書き換える（無限ループ防止）
         if (val !== cleanVal.toUpperCase()) {
@@ -45,9 +43,10 @@ if (sendBtn) {
         }
     };
 
-    cmdField.addEventListener('input', validateInput);
-    cmdField.addEventListener('blur', validateInput); // 入力欄から離れた時も念のため実行
+    cmdField.addEventListener('input', validateInput);  // 指示入力ボックスのinputイベント
+    cmdField.addEventListener('blur', validateInput);   // 入力欄から離れた時も念のため実行
 
+    // 送信ボタンのクリックイベントハンドラ
     sendBtn.addEventListener('click', () => {
         const nameField = document.getElementById('inputName');
         const nameVal = nameField.value.trim();
@@ -81,28 +80,29 @@ if (sendBtn) {
 }
 
 // --------------------------------------------------
-// 2. 講師ページ用の処理
+// instructor.html用の処理
 // --------------------------------------------------
-const resultsDiv = document.getElementById('results');
+const resultsDiv = document.getElementById('results');  // 指示表示用div
 if (resultsDiv) {
     const answersRef = ref(db, 'answers');
     
-    // データ追加時の処理
+    // データが追加された場合の処理
     onChildAdded(answersRef, (snapshot) => {
         const data = snapshot.val();
-        if (!data.name || !data.command) return; 
-
-        const card = document.createElement("div");
+        if (!data.name || !data.command) return;    // 値がない場合は抜ける
+        const card = document.createElement("div"); // データカード作成
         card.className = "card";
 
-        // 安全のためにHTMLエスケープ（名前に入力されたタグなどが動かないように）
-        // ※簡易的なXSS対策として textContent を使うか、このようにサニタイズするのが望ましい
+        // 安全のためにHTMLエスケープ（HTMLタグが入力された場合の安全策）
+        // サニタイズ（不正な文字を安全な文字に置き換え）
+        // 簡易的なXSS（クロスサイトスクリプティング）攻撃対策として textContent を使うのも可
         const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        // const safeTime = data.timestamp.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeTime = data.timestamp.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         const safeCmd = data.command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
         card.innerHTML = `
             <div class="card-name">${safeName}</div>
+            <div class="card-time">${safeTime}</div>
             <div class="card-cmd">${safeCmd}</div>
         `;
         
