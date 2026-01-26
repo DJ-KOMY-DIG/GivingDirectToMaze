@@ -106,7 +106,7 @@ if (resultsDiv) {
             <div class="card-name">${safeName}</div>
             <div class="card-cmd">${safeCmd}</div>
         `;
-        
+        // 画面に追加
         resultsDiv.appendChild(card);
         window.scrollTo(0, document.body.scrollHeight);
     });
@@ -114,21 +114,45 @@ if (resultsDiv) {
     // リセットボタンの処理
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) {
+        // resetBtn.addEventListener('click', () => {
+        //     if (confirm("データをすべて消去します。\nよろしいですか？")) {
+        //         // データベースの 'answers' フォルダを削除
+        //         remove(ref(db, 'answers'))
+        //             .then(() => {
+        //                 // alert("データをリセットしました");
+        //                 // 画面に残っているカードを消すためにリロード
+        //                 location.reload();
+        //             })
+        //             .catch((error) => {
+        //                 console.error(error);
+        //                 // alert("リセットに失敗しました");
+        //                 showAlert("迷路指示", "リセットに失敗しました", "error");
+        //             });
+        //     }
+        // });
+
         resetBtn.addEventListener('click', () => {
-            if (confirm("データをすべて消去します。\nよろしいですか？")) {
-                // データベースの 'answers' フォルダを削除
-                remove(ref(db, 'answers'))
-                    .then(() => {
-                        // alert("データをリセットしました");
-                        // 画面に残っているカードを消すためにリロード
-                        location.reload();
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        // alert("リセットに失敗しました");
-                        showAlert("迷路指示", "リセットに失敗しました", "error");
-                    });
-            }
+            Swal.fire({
+                title: 'データをすべて消去しますか？',
+                text: "この操作は取り消せません！",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'はい、削除します',
+                cancelButtonText: 'キャンセル'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    remove(ref(db, 'answers'))
+                        .then(() => {
+                            location.reload();
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                            showAlert("エラー", "リセットに失敗しました", "error");
+                        });
+                }
+            });
         });
     }
 }
