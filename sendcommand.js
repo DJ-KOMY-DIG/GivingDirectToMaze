@@ -139,7 +139,7 @@ if (resultsDiv) {
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'はい、削除します',
+                confirmButtonText: '削除します',
                 cancelButtonText: 'キャンセル'
             }).then((result) => {
                 if (result.isConfirmed) {
