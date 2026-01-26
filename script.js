@@ -161,7 +161,8 @@ async function runCommandMaze() {
 
     // 入力がない場合
     if (!commands) {
-        alert("指示を入力してください！");
+        // alert("指示を入力してください！");
+        showAlert("迷路指示", "指示を入力してください！", "warning");
         enableControls();
         return;
     }
@@ -241,7 +242,8 @@ async function runCommandMaze() {
                 // ゴール判定
                 if (cy === rows - 2 && cx === cols - 2) {
                     await sleep(100);
-                    alert("ゴールに到達しました！");
+                    showAlert("迷路指示", "ゴールに到達しました！", "success");
+                    // alert("ゴールに到達しました！");
                     break; 
                 }
             } else {
@@ -250,7 +252,8 @@ async function runCommandMaze() {
                 drawCell(cy, cx); // 一度クリア
                 drawArrow(cy, cx, dir); 
                 
-                alert(i + "文字目の指示「" + char + "」で壁に衝突しました！");
+                // alert(i + "文字目の指示「" + char + "」で壁に衝突しました！");
+                showAlert("迷路指示", (i + 1) + "文字目の指示「" + char + "」で壁に衝突しました！", "error");
                 break;
             }
         }
