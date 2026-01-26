@@ -14,3 +14,6 @@ function showAlert(title, text, icon) {
     confirmButtonColor: '#3085d6'
   });
 }
+
+// windowオブジェクトに登録することで、モジュール内から呼べるようにする
+window.showAlert = showAlert;
