@@ -53,11 +53,13 @@ if (sendBtn) {
         const cmdVal = cmdField.value.toUpperCase().trim(); // 大文字化
         
         if (!nameVal) {
-            alert("名前を入力してください！");
+            // alert("名前を入力してください！");
+            showAlert("迷路指示", "名前を入力してください！", "warning");
             return;
         }
         if (!cmdVal) {
-            alert("指示（F、R、L）を入力してください！");
+            // alert("指示（F、R、L）を入力してください！");
+            showAlert("迷路指示", "指示（F、R、L）を入力してください！", "warning");
             return;
         }
 
@@ -67,14 +69,15 @@ if (sendBtn) {
             command: cmdVal,
             timestamp: serverTimestamp()
         }).then(() => {
-            alert("送信しました！");
-
+            // alert("送信しました！");
+            showAlert("迷路指示", "送信しました！", "success");
             // 送信後に入力欄をクリア
             // cmdField.value = ""; 
 
         }).catch((error) => {
             console.error("Error:", error);
-            alert("送信に失敗しました");
+            // alert("送信に失敗しました");
+            showAlert("迷路指示", "送信に失敗しました", "error");
         });
     });
 }
@@ -122,9 +125,11 @@ if (resultsDiv) {
                     })
                     .catch((error) => {
                         console.error(error);
-                        alert("リセットに失敗しました");
+                        // alert("リセットに失敗しました");
+                        showAlert("迷路指示", "リセットに失敗しました", "error");
                     });
             }
         });
     }
 }
+
