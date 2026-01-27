@@ -25,6 +25,9 @@ let cols = 0;               // 列数
 let cellSize = 0;           // セルのサイズ（ピクセル）
 let isAnimating = false;    // アニメーション中フラグ
 
+let itvlIdBomb;     // Bomb Interval ID
+let itvlIdClear;    // Clear Bomb Interval ID
+
 const CANVAS_SIZE = 600;    // キャンバスの固定サイズ
 
 // DOM要素
@@ -45,10 +48,12 @@ window.onload = () => {
     btnCommand.onclick = runCommandMaze;
     btnReset.onclick = resetMazePath;
     inputCommand.focus(); 
+    initialize();
 };
 
 // 迷路作成
 function createMaze() {
+    initialize();
     if (isAnimating) return;                    // アニメーション中は無効
     inputCommand.value = "";                    // 指示入力欄をクリア
     let val = parseInt(inputGridSize.value);    // グリッドサイズ取得
@@ -152,6 +157,7 @@ function drawStartArrow() {
 
 // 指示を実行
 async function runCommandMaze() {
+    initialize();
     if (isAnimating) return;    // アニメーション中は無効
     resetMazePath();            // リセット
     isAnimating = true;         // アニメーション中フラグセット
@@ -243,6 +249,8 @@ async function runCommandMaze() {
                 if (cy === rows - 2 && cx === cols - 2) {
                     await sleep(100);
                     showAlert("迷路指示", "ゴールに到達しました！", "success");
+                    itvlIdBomb = setInterval(showBomb, 1000);            // Bomb
+                    itvlIdClear = setInterval(clearBomb, 1000 * 5);      // Clear Bomb
                     // alert("ゴールに到達しました！");
                     break; 
                 }
@@ -292,6 +300,7 @@ function drawArrow(y, x, dir) {
 
 // リセット処理
 function resetMazePath() {
+    initialize();
     if (isAnimating) return;
 
     for (let y = 0; y < rows; y++) {
@@ -362,3 +371,19 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function showBomb() {
+//   confetti();                     // Simple
+  confetti({                         // Bomb!
+    particleCount: 100,
+    spread: 70
+  });
+}
+
+function clearBomb() {
+  clearInterval(itvlIdBomb);
+}
+
+function initialize() {
+    clearInterval(itvlIdBomb);  // Bomb停止
+    clearInterval(itvlIdClear); // Clear Bomb停止
+}
