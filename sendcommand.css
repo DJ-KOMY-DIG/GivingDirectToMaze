@@ -89,11 +89,6 @@ textarea#inputCommand {
     line-height: 1.5;    /* 行間を少し広げて可読性UP */
 }
 
-input:focus,
-textarea:focus {
-    border-color: #007bff;
-}
-
 input#inputCommand {
     text-transform: uppercase; 
     letter-spacing: 2px;
@@ -122,10 +117,12 @@ button#sendBtn:active {
 
 #results { 
     display: flex; 
-    flex-wrap: wrap; 
+    /* flex-wrap: wrap;  横並び*/
+    flex-direction: column;     /* 縦方向に並べる */
     gap: 15px; 
-    justify-content: center; 
-    align-items: flex-start;
+    /* justify-content: center; 
+    align-items: flex-start; 左揃え */
+    align-items: center;        /* 中央揃え */
     margin-top: 30px; 
 }
 
@@ -159,3 +156,4 @@ button#sendBtn:active {
     0% { transform: translateY(20px); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
 }
+
