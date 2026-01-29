@@ -122,7 +122,8 @@ button#sendBtn:active {
 
 #results { 
     display: flex; 
-    flex-wrap: wrap; 
+    /* flex-wrap: wrap;  */
+    flex-direction: column;
     gap: 15px; 
     justify-content: center; 
     align-items: flex-start;
