@@ -89,6 +89,11 @@ textarea#inputCommand {
     line-height: 1.5;    /* 行間を少し広げて可読性UP */
 }
 
+input:focus,
+textarea:focus {
+    border-color: #007bff;
+}
+
 input#inputCommand {
     text-transform: uppercase; 
     letter-spacing: 2px;
@@ -117,16 +122,14 @@ button#sendBtn:active {
 
 #results { 
     display: flex; 
-    /* flex-wrap: wrap;  横並び*/
-    flex-direction: column;     /* 縦方向に並べる */
+    flex-wrap: wrap; 
     gap: 15px; 
-    /* justify-content: center; 
-    align-items: flex-start; 左揃え */
-    align-items: center;        /* 中央揃え */
+    justify-content: center; 
+    align-items: flex-start;
     margin-top: 30px; 
 }
 
-.card {
+/* .card {
     background: white;
     padding: 15px 20px;
     border-radius: 10px;
@@ -135,6 +138,51 @@ button#sendBtn:active {
     text-align: center;
     animation: slideIn 0.4s ease-out;
     border-left: 5px solid #007bff; 
+} */
+
+.card {
+    position: relative; /* ボタンの配置基準 */
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    min-width: 120px;
+    text-align: left;
+    animation: slideIn 0.4s ease-out;
+    border-left: 5px solid #007bff;
+    margin-bottom: 10px; /* カード同士の間隔用 */
+}
+
+/* コピーボタンのスタイル */
+.copy-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;    /* テキストより手前に表示させる */
+    
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #555;
+    transition: background-color 0.2s;
+}
+
+.copy-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.card-notes {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    letter-spacing: 1px;
+    white-space: pre-wrap; /* 改行やスペースをそのまま表示 */
+    word-break: break-all;
+    font-family: monospace;
+    padding-right: 30px; /* ボタンと被らないように右側に余白を作る */
 }
 
 .card-name {
@@ -156,4 +204,3 @@ button#sendBtn:active {
     0% { transform: translateY(20px); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
 }
-

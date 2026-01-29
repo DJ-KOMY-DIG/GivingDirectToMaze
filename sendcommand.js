@@ -96,6 +96,14 @@ if (resultsDiv) {
         const card = document.createElement("div"); // データカード作成
         card.className = "card";
 
+        // テキスト部分の作成
+        // innerHTMLを使わず、divを作って textContent に代入することで
+        // 自動的に安全に表示され、かつバッククォート等でのエラーも防げる
+        // const nameContent = document.createElement("div");
+        // nameContent.className = "card-name";
+        // nameContent.textContent = data.name; // ここで生のデータを入れる（自動エスケープされる）
+        // card.appendChild(nameContent);
+
         // 安全のためにHTMLエスケープ（HTMLタグが入力された場合の安全策）
         // サニタイズ（不正な文字を安全な文字に置き換え）
         // 簡易的なXSS（クロスサイトスクリプティング）攻撃対策として textContent を使うのも可
@@ -106,8 +114,44 @@ if (resultsDiv) {
             <div class="card-name">${safeName}</div>
             <div class="card-cmd">${safeCmd}</div>
         `;
+
+        // コピーボタンの作成
+        const copyBtn = document.createElement('button');
+        copyBtn.textContent = 'Copy';
+        copyBtn.className = 'copy-btn';
+
+        copyBtn.addEventListener('click', () => {
+            // safeNotesではなく、元の data.notes をコピーする
+            // そうしないと、貼り付けたときに <script> が &lt;script&gt; になってしまう
+            navigator.clipboard.writeText(data.notes)
+                .then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('コピー失敗:', err);
+                    alert('コピーに失敗しました');
+                });
+        });
+
+        card.appendChild(copyBtn);
+        resultsDiv.prepend(card);
+
+        // 安全のためにHTMLエスケープ（HTMLタグが入力された場合の安全策）
+        // サニタイズ（不正な文字を安全な文字に置き換え）
+        // 簡易的なXSS（クロスサイトスクリプティング）攻撃対策として textContent を使うのも可
+        // const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        // const safeCmd = data.command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        // card.innerHTML = `
+        //     <div class="card-name">${safeName}</div>
+        //     <div class="card-cmd">${safeCmd}</div>
+        // `;
         // 画面に追加
-        resultsDiv.appendChild(card);
+        // resultsDiv.appendChild(card);
         window.scrollTo(0, document.body.scrollHeight);
     });
 
