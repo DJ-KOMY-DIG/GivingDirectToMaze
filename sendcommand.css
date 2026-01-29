@@ -131,17 +131,6 @@ button#sendBtn:active {
     margin-top: 30px; 
 }
 
-/* .card {
-    background: white;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    min-width: 120px; 
-    text-align: center;
-    animation: slideIn 0.4s ease-out;
-    border-left: 5px solid #007bff; 
-} */
-
 .card {
     position: relative; /* ボタンの配置基準 */
     background: white;
@@ -176,17 +165,6 @@ button#sendBtn:active {
 .copy-btn:hover {
     background-color: #e0e0e0;
 }
-
-/* .card-notes {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    letter-spacing: 1px;
-    white-space: pre-wrap; 改行やスペースをそのまま表示
-    word-break: break-all;
-    font-family: monospace;
-    padding-right: 30px; ボタンと被らないように右側に余白を作る
-} */
 
 .card-name {
     font-size: 18px;
