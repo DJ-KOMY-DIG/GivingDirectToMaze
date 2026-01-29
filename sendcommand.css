@@ -175,22 +175,23 @@ button#sendBtn:active {
     background-color: #e0e0e0;
 }
 
-.card-notes {
+/* .card-notes {
     font-size: 18px;
     font-weight: bold;
     color: #333;
     letter-spacing: 1px;
-    white-space: pre-wrap; /* 改行やスペースをそのまま表示 */
+    white-space: pre-wrap; 改行やスペースをそのまま表示
     word-break: break-all;
     font-family: monospace;
-    padding-right: 30px; /* ボタンと被らないように右側に余白を作る */
-}
+    padding-right: 30px; ボタンと被らないように右側に余白を作る
+} */
 
 .card-name {
     font-size: 18px;
     color: #888;
     margin-bottom: 5px;
     text-align: left;
+    padding-right: 30px; /* ボタンと被らないように右側に余白を作る */
 }
 
 .card-cmd {
