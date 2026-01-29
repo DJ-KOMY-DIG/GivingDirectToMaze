@@ -85,6 +85,20 @@ if (sendBtn) {
 // --------------------------------------------------
 // instructor.html用の処理
 // --------------------------------------------------
+
+// クリップボードのアイコン
+const ICON_COPY = `
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  
+  <rect x="6" y="7" width="11" height="13" rx="2" fill="white" />  
+  <rect x="10" y="3" width="11" height="13" rx="2" fill="white" />  
+</svg>`;
+
+// チェックマークのアイコン（完了用）
+const ICON_CHECK = `
+<svg viewBox="0 0 24 24">
+  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+</svg>`;
+
 const resultsDiv = document.getElementById('results');  // 指示表示用div
 if (resultsDiv) {
     const answersRef = ref(db, 'answers');
@@ -120,21 +134,44 @@ if (resultsDiv) {
         copyBtn.textContent = 'Copy';
         copyBtn.className = 'copy-btn';
 
+        // ★アイコンとツールチップの初期設定
+        copyBtn.innerHTML = ICON_COPY;        // アイコンを表示
+        copyBtn.setAttribute('data-tooltip', 'コピー'); // ツールチップの文字
+
         copyBtn.addEventListener('click', () => {
             // safeNotesではなく、元の data.notes をコピーする
             // そうしないと、貼り付けたときに <script> が &lt;script&gt; になってしまう
             navigator.clipboard.writeText(data.command)
                 .then(() => {
-                    const originalText = copyBtn.textContent;
-                    copyBtn.textContent = 'Copied!';
+                    // 1. アイコンをチェックマークに変更
+                    copyBtn.innerHTML = ICON_CHECK;
+                    // 2. 色を緑色っぽくする（CSSを直接変更またはクラス付与）
+                    copyBtn.style.color = '#28a745';
+                    // 3. ツールチップの文字を変更
+                    copyBtn.setAttribute('data-tooltip', 'コピーしました！');
+
+                    // 2秒後に元に戻す
                     setTimeout(() => {
-                        copyBtn.textContent = originalText;
+                        copyBtn.innerHTML = ICON_COPY;
+                        copyBtn.style.color = ''; // 色をCSSの指定に戻す
+                        copyBtn.setAttribute('data-tooltip', 'コピー');
                     }, 2000);
                 })
                 .catch(err => {
                     console.error('コピー失敗:', err);
                     alert('コピーに失敗しました');
                 });
+
+                //     const originalText = copyBtn.textContent;
+                //     copyBtn.textContent = 'Copied!';
+                //     setTimeout(() => {
+                //         copyBtn.textContent = originalText;
+                //     }, 2000);
+                // })
+                // .catch(err => {
+                //     console.error('コピー失敗:', err);
+                //     alert('コピーに失敗しました');
+                // });
         });
 
         card.appendChild(copyBtn);

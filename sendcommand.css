@@ -151,20 +151,84 @@ button#sendBtn:active {
     top: 5px;
     right: 5px;
     z-index: 10;    /* テキストより手前に表示させる */
+
+    /* ボタンのサイズと背景 */
+    background-color: transparent; /* 背景は透明に（アイコンだけ浮かぶように） */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 4px; /* アイコン周りの余白 */
     
-    background-color: #f0f0f0;
+    /* アイコンの色 */
+    color: #888;
+    transition: color 0.2s, transform 0.1s;
+    
+    /* Flexboxでアイコンを中央揃え */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* background-color: #f0f0f0;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     padding: 4px 8px;
     font-size: 12px;
     color: #555;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s; */
 }
 
-.copy-btn:hover {
+/* .copy-btn:hover {
     background-color: #e0e0e0;
+} */
+
+
+.copy-btn:hover {
+    background-color: rgba(0,0,0,0.05); /* ホバー時にうっすらグレーに */
+    color: #333; /* アイコンを濃く */
 }
+
+.copy-btn:active {
+    transform: scale(0.95); /* クリック時に少し凹む演出 */
+}
+
+/* SVGアイコンのサイズ設定 */
+.copy-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor; /* 文字色(color)をSVGの塗りに適用 */
+}
+
+/* --- ★ここからツールチップ（吹き出し）の設定 --- */
+
+/* ツールチップの共通設定 */
+.copy-btn::after {
+    content: attr(data-tooltip); /* HTMLの data-tooltip 属性の中身を表示 */
+    
+    position: absolute;
+    bottom: 100%;       /* ボタンの「上」に表示（下なら top: 100%） */
+    left: 50%;
+    transform: translateX(-50%); /* 中央揃え */
+    margin-bottom: 5px; /* ボタンとの隙間 */
+    
+    padding: 5px 8px;
+    background-color: #333; /* 黒背景 */
+    color: #fff;            /* 白文字 */
+    font-size: 11px;
+    border-radius: 4px;
+    white-space: nowrap;    /* 改行させない */
+    opacity: 0;             /* 最初は隠す */
+    visibility: hidden;
+    transition: opacity 0.2s;
+    pointer-events: none;   /* ツールチップ自体はクリック判定させない */
+}
+
+/* ホバー時にツールチップを表示 */
+.copy-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 .card-name {
     font-size: 18px;
