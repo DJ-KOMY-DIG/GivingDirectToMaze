@@ -27,15 +27,15 @@ const db = getDatabase(app);
 // --------------------------------------------------
 // student.html用の処理
 // --------------------------------------------------
-const sendBtn = document.getElementById('sendBtn'); // 送信ボタン
+const sendBtn = document.getElementById('sendBtn');             // 送信ボタン
 if (sendBtn) {
     const cmdField = document.getElementById('inputCommand');   // 指示入力ボックス
     
     // 入力制限のロジック
     // 日本語入力中などを考慮し、inputイベントで監視
     const validateInput = (e) => {        
-        const val = e.target.value;                     // 現在の入力値        
-        const cleanVal = val.replace(/[^fFrRlL]/g, ''); // F,R,L (大文字小文字) 以外を空文字に置換
+        const val = e.target.value;                             // 現在の入力値        
+        const cleanVal = val.replace(/[^fFrRlL]/g, '');         // F,R,L (大文字小文字) 以外を空文字に置換
         
         // 変化があった場合のみ値を書き換える（無限ループ防止）
         if (val !== cleanVal.toUpperCase()) {
@@ -43,22 +43,21 @@ if (sendBtn) {
         }
     };
 
-    cmdField.addEventListener('input', validateInput);  // 指示入力ボックスのinputイベント
-    cmdField.addEventListener('blur', validateInput);   // 入力欄から離れた時も念のため実行
+    cmdField.addEventListener('input', validateInput);          // 指示入力ボックスのinputイベント
+    cmdField.addEventListener('blur', validateInput);           // 入力欄から離れた時も念のため実行
 
     // 送信ボタンのクリックイベントハンドラ
     sendBtn.addEventListener('click', () => {
         const nameField = document.getElementById('inputName');
         const nameVal = nameField.value.trim();
-        const cmdVal = cmdField.value.toUpperCase().trim(); // 大文字化
+        const cmdVal = cmdField.value.toUpperCase().trim();     // 大文字化
         
         if (!nameVal) {
-            // alert("名前を入力してください！");
+            // alertではなく、SweetAlert2でメッセージ表示
             showAlert("迷路指示", "名前を入力してください！", "warning");
             return;
         }
         if (!cmdVal) {
-            // alert("指示（F、R、L）を入力してください！");
             showAlert("迷路指示", "指示（F、R、L）を入力してください！", "warning");
             return;
         }
@@ -69,14 +68,12 @@ if (sendBtn) {
             command: cmdVal,
             timestamp: serverTimestamp()
         }).then(() => {
-            // alert("送信しました！");
             showAlert("迷路指示", "送信しました！", "success");
             // 送信後に入力欄をクリア
             // cmdField.value = ""; 
 
         }).catch((error) => {
             console.error("Error:", error);
-            // alert("送信に失敗しました");
             showAlert("迷路指示", "送信に失敗しました", "error");
         });
     });
@@ -134,20 +131,18 @@ if (resultsDiv) {
         copyBtn.textContent = 'Copy';
         copyBtn.className = 'copy-btn';
 
-        // ★アイコンとツールチップの初期設定
-        copyBtn.innerHTML = ICON_COPY;        // アイコンを表示
-        copyBtn.setAttribute('data-tooltip', 'コピー'); // ツールチップの文字
+        // アイコンとツールチップの初期設定
+        copyBtn.innerHTML = ICON_COPY;                      // アイコンを表示
+        copyBtn.setAttribute('data-tooltip', 'コピー');     // ツールチップの文字
 
         copyBtn.addEventListener('click', () => {
-            // safeNotesではなく、元の data.notes をコピーする
-            // そうしないと、貼り付けたときに <script> が &lt;script&gt; になってしまう
             navigator.clipboard.writeText(data.command)
                 .then(() => {
-                    // 1. アイコンをチェックマークに変更
+                    // アイコンをチェックマークに変更
                     copyBtn.innerHTML = ICON_CHECK;
-                    // 2. 色を緑色っぽくする（CSSを直接変更またはクラス付与）
+                    // 色を緑色っぽくする（CSSを直接変更またはクラス付与）
                     copyBtn.style.color = '#28a745';
-                    // 3. ツールチップの文字を変更
+                    // ツールチップの文字を変更
                     copyBtn.setAttribute('data-tooltip', 'コピーしました！');
 
                     // 2秒後に元に戻す
@@ -161,57 +156,17 @@ if (resultsDiv) {
                     console.error('コピー失敗:', err);
                     alert('コピーに失敗しました');
                 });
-
-                //     const originalText = copyBtn.textContent;
-                //     copyBtn.textContent = 'Copied!';
-                //     setTimeout(() => {
-                //         copyBtn.textContent = originalText;
-                //     }, 2000);
-                // })
-                // .catch(err => {
-                //     console.error('コピー失敗:', err);
-                //     alert('コピーに失敗しました');
-                // });
         });
 
-        card.appendChild(copyBtn);
-        resultsDiv.prepend(card);
-
-        // 安全のためにHTMLエスケープ（HTMLタグが入力された場合の安全策）
-        // サニタイズ（不正な文字を安全な文字に置き換え）
-        // 簡易的なXSS（クロスサイトスクリプティング）攻撃対策として textContent を使うのも可
-        // const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        // const safeCmd = data.command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-        // card.innerHTML = `
-        //     <div class="card-name">${safeName}</div>
-        //     <div class="card-cmd">${safeCmd}</div>
-        // `;
-        // 画面に追加
-        // resultsDiv.appendChild(card);
+        card.appendChild(copyBtn);  // カードにコピーボタンを追加
+        resultsDiv.prepend(card);   // 新しいデータを上に追加
+        // 画面を一番下までスクロール
         window.scrollTo(0, document.body.scrollHeight);
     });
 
     // リセットボタンの処理
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) {
-        // resetBtn.addEventListener('click', () => {
-        //     if (confirm("データをすべて消去します。\nよろしいですか？")) {
-        //         // データベースの 'answers' フォルダを削除
-        //         remove(ref(db, 'answers'))
-        //             .then(() => {
-        //                 // alert("データをリセットしました");
-        //                 // 画面に残っているカードを消すためにリロード
-        //                 location.reload();
-        //             })
-        //             .catch((error) => {
-        //                 console.error(error);
-        //                 // alert("リセットに失敗しました");
-        //                 showAlert("迷路指示", "リセットに失敗しました", "error");
-        //             });
-        //     }
-        // });
-
         resetBtn.addEventListener('click', () => {
             Swal.fire({
                 title: 'データをすべて消去しますか？',

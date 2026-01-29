@@ -40,7 +40,6 @@ button.danger-btn:hover {
     background-color: #bd2130;
 }
 
-
 .input-group {
     margin-bottom: 15px;
     text-align: left;
@@ -122,12 +121,12 @@ button#sendBtn:active {
 
 #results { 
     display: flex; 
-    /* flex-wrap: wrap;  */
-    flex-direction: column;
+    /* flex-wrap: wrap;  横に並ぶ */
+    flex-direction: column; /* 縦に並ぶ */
     gap: 15px; 
     justify-content: center; 
-    align-items: center;
-    /* align-items: flex-start; */
+    align-items: center;    /* 中央揃え */
+    /* align-items: flex-start; 左揃え */
     margin-top: 30px; 
 }
 
@@ -167,21 +166,7 @@ button#sendBtn:active {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /* background-color: #f0f0f0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 4px 8px;
-    font-size: 12px;
-    color: #555;
-    transition: background-color 0.2s; */
 }
-
-/* .copy-btn:hover {
-    background-color: #e0e0e0;
-} */
-
 
 .copy-btn:hover {
     background-color: rgba(0,0,0,0.05); /* ホバー時にうっすらグレーに */
@@ -198,8 +183,6 @@ button#sendBtn:active {
     height: 20px;
     fill: currentColor; /* 文字色(color)をSVGの塗りに適用 */
 }
-
-/* --- ★ここからツールチップ（吹き出し）の設定 --- */
 
 /* ツールチップの共通設定 */
 .copy-btn::after {
@@ -228,7 +211,6 @@ button#sendBtn:active {
     opacity: 1;
     visibility: visible;
 }
-
 
 .card-name {
     font-size: 18px;
