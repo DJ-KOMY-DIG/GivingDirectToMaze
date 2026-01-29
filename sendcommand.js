@@ -123,7 +123,7 @@ if (resultsDiv) {
         copyBtn.addEventListener('click', () => {
             // safeNotesではなく、元の data.notes をコピーする
             // そうしないと、貼り付けたときに <script> が &lt;script&gt; になってしまう
-            navigator.clipboard.writeText(data.notes)
+            navigator.clipboard.writeText(data.command)
                 .then(() => {
                     const originalText = copyBtn.textContent;
                     copyBtn.textContent = 'Copied!';

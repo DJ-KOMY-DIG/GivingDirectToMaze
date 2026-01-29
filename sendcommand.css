@@ -147,7 +147,8 @@ button#sendBtn:active {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     min-width: 120px;
-    text-align: left;
+    text-align: center;
+    /* text-align: left; */
     animation: slideIn 0.4s ease-out;
     border-left: 5px solid #007bff;
     margin-bottom: 10px; /* カード同士の間隔用 */
