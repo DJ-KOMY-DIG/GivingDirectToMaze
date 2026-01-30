@@ -38,12 +38,14 @@ const inputGridSize = document.getElementById('gridSize');
 const rangeSpeed = document.getElementById('speedRange');
 const rangeBranch = document.getElementById('branchRate');
 const inputCommand = document.getElementById('commandInput');
+const btnClear = document.getElementById('btnClear');
 const btnCommand = document.getElementById('btnCommand');
 const btnReset = document.getElementById('btnReset'); 
 
 // 初期化イベント
 window.onload = () => {
-    createMaze();    
+    createMaze();
+    btnClear.onclick = clearCommand;    
     btnCreate.onclick = createMaze;
     btnCommand.onclick = runCommandMaze;
     btnReset.onclick = resetMazePath;
@@ -154,6 +156,10 @@ function drawStartArrow() {
     }
 
     drawArrow(cy, cx, dir);
+}
+
+function clearCommand() {
+    inputCommand.value = "";
 }
 
 // 指示を実行
