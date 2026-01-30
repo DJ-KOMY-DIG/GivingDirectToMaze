@@ -25,8 +25,8 @@ let cols = 0;               // 列数
 let cellSize = 0;           // セルのサイズ（ピクセル）
 let isAnimating = false;    // アニメーション中フラグ
 
-let itvlIdBomb;     // Bomb Interval ID
-let itvlIdClear;    // Clear Bomb Interval ID
+let itvlIdBomb;             // Bomb Interval ID
+let itvlIdClear;            // Clear Bomb Interval ID
 
 const CANVAS_SIZE = 600;    // キャンバスの固定サイズ
 
@@ -53,7 +53,7 @@ window.onload = () => {
 
 // 迷路作成
 function createMaze() {
-    initialize();
+    initialize();                               // Bomb停止
     if (isAnimating) return;                    // アニメーション中は無効
     inputCommand.value = "";                    // 指示入力欄をクリア
     let val = parseInt(inputGridSize.value);    // グリッドサイズ取得
@@ -88,6 +88,7 @@ function createMaze() {
         { dy: 0, dx: 2 } 
     ];
 
+    // メインループ
     while (activeCells.length > 0) {
         let index;
         if (Math.random() < branchRate) {
@@ -112,10 +113,10 @@ function createMaze() {
                 if (maze[ny][nx] === WALL) {
                     const wallY = cy + directions[i].dy / 2;    // 壁yの座標
                     const wallX = cx + directions[i].dx / 2;    // 壁xの座標
-                    maze[wallY][wallX] = AISLE; // 壁を通路に
-                    maze[ny][nx] = AISLE;       // 新しいセルを通路に
+                    maze[wallY][wallX] = AISLE;                 // 壁を通路に
+                    maze[ny][nx] = AISLE;                       // 新しいセルを通路に
 
-                    activeCells.push({ y: ny, x: nx });  // アクティブセルリストに追加
+                    activeCells.push({ y: ny, x: nx });         // アクティブセルリストに追加
                     found = true;
                     break;
                 }
@@ -157,7 +158,7 @@ function drawStartArrow() {
 
 // 指示を実行
 async function runCommandMaze() {
-    initialize();
+    initialize();               // Bomb停止
     if (isAnimating) return;    // アニメーション中は無効
     resetMazePath();            // リセット
     isAnimating = true;         // アニメーション中フラグセット
@@ -202,18 +203,14 @@ async function runCommandMaze() {
         // 次の向きを決定
         let nextDir = dir;
         
-        if (char === 'F') {
-            // 向きはそのまま
-            nextDir = dir;
-        } else if (char === 'R') {
-            // 右に90度
-            nextDir = (dir + 1) % 4;
-        } else if (char === 'L') {
-            // 左に90度
-            nextDir = (dir + 3) % 4;
-        } else {
-            // F, R, L 以外はスキップ
-            continue;
+        if (char === 'F') {            
+            nextDir = dir;              // 向きはそのまま
+        } else if (char === 'R') {            
+            nextDir = (dir + 1) % 4;    // 右に90度
+        } else if (char === 'L') {            
+            nextDir = (dir + 3) % 4;    // 左に90度
+        } else {            
+            continue;                   // F, R, L 以外はスキップ
         }
 
         // 向きを更新 (移動前に向きを変える)
@@ -248,10 +245,10 @@ async function runCommandMaze() {
                 // ゴール判定
                 if (cy === rows - 2 && cx === cols - 2) {
                     await sleep(100);
+                    // alert("ゴールに到達しました！");
                     showAlert("迷路指示", "ゴールに到達しました！", "success");
                     itvlIdBomb = setInterval(showBomb, 1000);            // Bomb
                     itvlIdClear = setInterval(clearBomb, 1000 * 5);      // Clear Bomb
-                    // alert("ゴールに到達しました！");
                     break; 
                 }
             } else {
