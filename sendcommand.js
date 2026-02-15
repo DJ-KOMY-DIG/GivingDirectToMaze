@@ -196,8 +196,9 @@ if (resultsDiv) {
 function getKeyValue() {
     const aryData = [65, 73, 122, 97, 83, 121, 68, 82, 114, 72, 121, 118, 95, 66, 114, 115, 74, 105, 98, 95, 115, 99, 55, 117, 117, 71, 122, 65, 111, 70, 111, 115, 98, 121, 121, 49, 68, 84, 56]
     let key = "";
-    for (const i of aryData) {
-        key += String.fromCharCode(i);
+    for (const code of aryData) {
+        key += String.fromCharCode(code);
     }
     return key;
 }
+
